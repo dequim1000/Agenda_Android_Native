@@ -16,6 +16,8 @@ public class Person implements Serializable {
     @ColumnInfo(name = "tipopessoa")
     private String tipoPessoa;
 
+
+
     public Person(String nome, String tipoPessoa) {
         this.nome = nome;
         this.tipoPessoa = tipoPessoa;

@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -19,8 +20,11 @@ public interface PersonDAO {
     Person findByName(String nome);
 
     @Insert
-    void insertAll(Person... person);
+    List<Long> insertAll(Person... person);
 
     @Delete
     void delete(Person person);
+
+    @Update
+    void updatePerson(Person... person);
 }

@@ -10,8 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.desafiodatamob.R;
+import com.example.desafiodatamob.contents.ContentTransfer;
 import com.example.desafiodatamob.model.AppDataBase;
 import com.example.desafiodatamob.model.Person;
+
+import java.util.List;
 
 public class CadastrodePessoa extends AppCompatActivity {
 
@@ -29,14 +32,25 @@ public class CadastrodePessoa extends AppCompatActivity {
         btnCadastrar = findViewById(R.id.btnCadastrar);
 
 
-        final AppDataBase db = AppDataBase.getInstance(CadastrodePessoa.this);
+        AppDataBase db = AppDataBase.getInstance(CadastrodePessoa.this);
 
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.personDAO().insertAll(new Person(nome.getText().toString(), tipoPessoa.getText().toString()));
-                startActivity(new Intent(CadastrodePessoa.this, MainActivity.class));
+
+                Person newPerson = new Person(nome.getText().toString(), tipoPessoa.getText().toString());
+                List<Long> retorno = db.personDAO().insertAll(newPerson);
+                if(retorno != null && retorno.size() > 0) {
+
+                    newPerson.setUid(retorno.get(0).intValue());
+                    Intent intent = new Intent();
+                    intent.putExtra(ContentTransfer.EXTRA_PESSOA, newPerson);
+
+
+                    setResult(RESULT_OK, intent);
+                    CadastrodePessoa.this.finish();
+                }
             }
         });
 
